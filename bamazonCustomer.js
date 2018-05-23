@@ -55,7 +55,7 @@ function start() {
                 connection.query("SELECT * FROM products WHERE item_id = ?", ID, function (err, data) {
                     if (err) throw err;
                     if (amt > data[0].stock_quantity) {
-                        console.log("\nInsufficient inventory to fulfill order. Please try a lower amount\n");
+                        console.log(`\nInsufficient inventory to fulfill order. We only have ${data[0].stock_quantity} left. Please try a lower amount\n`);
                         start();
                     } else if (amt > 0 && amt < data[0].stock_quantity){
                         // console.log(data);
@@ -63,13 +63,18 @@ function start() {
                         // console.log("data[0].price: ", data[0].price);
                         cartTotal = data[0].price * amt;
                         console.log("ORDER TOTAL: $", cartTotal);
+                        console.log();
+                        // connection.query("UPDATE * FROM products where item_id =?" , data[0].item_id, function (err, answers){
+                        //     console.log("answers: ", answers);
+                        // });
+                        start();
                     } else {
                         console.log("\nInvalid amount. Please try again with valid amount\n");
                         start();
                     }
                 });
             } else {
-                console.log("\ninvalid ID. Please try again with valid ID\n");
+                console.log("\nInvalid ID. Please try again with valid ID\n");
                 start();
             }
         });
